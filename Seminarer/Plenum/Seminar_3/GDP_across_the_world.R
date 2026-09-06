@@ -29,4 +29,20 @@ ggplot(pwt.growth) + geom_point(aes(x = log(gdp1970),y = Vekst)) + labs(x = "log
 
 #6 lager en dummyvariabel for å finne antall år økonomien har vokst
 
+dummy <- pwt |> 
+  mutate (dummy = if_else(gdp<lag(gdp),0,1)) |>
+  summarise(Mean_dummy = mean(dummy,na.rm = TRUE),.by = country)
 
+# skal nå merge denne tibblen sammen med det tidy-behandlete datasette jeg allerede har jobbet med
+
+pwt.growth <- left_join(pwt.growth,dummy) |> 
+  filter(Vekst>-1000) #fjerner ekstremverdiene
+
+#7 Lager et scatterplott, og regner korrelasjonen mellom disse to variablene
+
+ggplot(pwt.growth) + geom_point(aes(x = Vekst, y = Mean_dummy))
+
+#finner korrelasjonen mellom disse to
+c = cor(pwt.growth$Vekst,pwt.growth$Mean_dummy)
+
+sprintf("Korrelajonen er %0f mellom gjennomsnittlig vekt, og jevn vekst",c)
