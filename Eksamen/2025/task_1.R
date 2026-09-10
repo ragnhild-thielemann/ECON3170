@@ -1,66 +1,71 @@
-
+library(readxl)
 library(tidyverse)
 
-data <- read_csv("esc.csv")
+esc <- read_csv("esc.csv") #understrek gjør at vi leser det som en tibble
 
-sprintf("Det er %s land som deltar, og %s land som er i finalen",nrow(data),ncol(data)-4)
+sprintf("Det er %s land som deltar, og %s land som gir poeng", nrow(esc),ncol(esc)-4)
 
+esc_long <- esc |>
+  pivot_longer(cols = -c("contestant"), #kjører gjennom alle kolonnene i det opprinnlige datasettet, med unntak av deltagerlandene
+                names_to = "Awarding",
+               values_to = "Score") |>
+  
+  dplyr::mutate(Score = replace_na(Score,0)) #setter inn 0 for na i score-vekroren
 
-#lager en vektor med alle overskriftene på kolonnene
-vektor = c(names(head(data)))[-1]
-land = c(names(head(data)))[-(1:4)]
+topp_score <- esc_long |>
+  group_by(contestant)|>
+  summarise(topp = (sum(Score == 12)), Jury = Score[Awarding == "jury_score"])
+ggplot(topp_score) +
+  geom_point(aes(x = topp, y = Jury)) +
+  geom_label(aes(x = topp, y = Jury, label = contestant)) + labs(x = "Toppplaseringer", y = "Jurys score") +
+  theme_bw()
 
-#Dette er kolonnene vi kjører igjennom, som vi skal bruke
-long <- data |> pivot_longer(cols = (vektor),
-                     names_to = "Awarding",
-                     values_to = "Score"
-                     )  |> mutate(Score = replace_na(Score ,0))
-
-
-
-#antall 12-ere
-#lager en ny tibble, der vi summerer sammen antall 12-ere for hvert tall
-sortert_land <- long |> summarise(s_12 = sum(Score == 12), .by = contestant) 
-v = long$Score[long$Awarding== "jury_score"]
-v = tibble(contestant =sortert_land$contestant ,Jury = vektor_til_merging)
-#merger de sammen
-sortert_land <- sortert_land |> left_join(v)
-
-
-ggplot(sortert_land) + geom_point(aes(x = s_12, y=Jury )) + labs ( x = "Antall 12-ere", y = "Score fra Juryen")
+reverse_tibble <- esc_long |>
+  rename(contestant = Awarding,
+         Awarding = contestant,
+         reverse = Score)
 
 
-cor(sortert_land$s_12, sortert_land$Jury)
+esc_cor <- esc_long |>
+  left_join(reverse_tibble) |>
+  mutate(reverse = replace_na(reverse, 0)) |>
+  filter(!Awarding %in% c("total_score","televote_score","jury_score")) |>
+  filter(contestant== "Ukraine")
 
-deltagere <- unique(long$contestant)
+View(esc_cor)
 
-ny_tibble <- long |> filter(Awarding %in% land)
+ggplot(esc_cor) + geom_smooth(aes(x = Score, y = reverse)) + labs(x = "Score", y = "Reverse", title = "korrelasjon mellom score og reverse")
 
-vektor <- c()
+#impoerterer både datasettet og sheets
+esc_exel <- read_excel("econ3170_4170_300126_esc.xlsx.xlsx", sheet = "Televote",skip = 2,col_names = T) #fjerner de to første kolonnene
+  
 
-print(length(deltagere))
-for (d in deltagere){
-  for (l in land){
-    if (any(deltagere == l)){ #dette er bare relevant informasjon for landene som er deltagere
+  
+  
 
-     s = ny_tibble$Score[ny_tibble$contestant == l & ny_tibble$Awarding == d]
-    } else{
-       s = 0
-     }
-      
+esc_exel <- esc_exel |>
+  dplyr::select(-ends_with("vote" )) |>
+  dplyr::select(-ends_with("World")) |>
+  rename(contestant = "...2",
+         total_score = "...3",
+         jury_score = "...4",
+         televote_score = "...5") |>
+    filter(!is.na(contestant))|> #fjerner aller ganger landene som blir stemt på er na
     
-  vektor = c(vektor, s)}
-}
+  pivot_longer(cols = -c("contestant"),
+               names_to = "Awarding",
+               values_to = "Score_tv") |>
+  mutate(Score_tv = replace_na(Score_tv,0)) 
 
-ny_tibble <- tibble(ny_tibble,vektor)
-View(ny_tibble)
+esc_total <- esc_long |>
+  left_join(esc_exel) |>
+  filter(!Awarding %in% c("total_score","televote_score","jury_score")) |>
+  mutate(diff = Score-Score_tv) |>
+  group_by(contestant) |>
+  summarise(m = (mean(diff))) |>
+  mutate(m = (m)) |>
+  arrange(desc(m))
 
+View(esc_total[1:5,])
 
-ggplot(ny_tibble) + geom_smooth(aes(x = Score, y = vektor)) #Det bør plottes som en smooth vektor, men vi ser at det er stor usikkerhet knyttet rundt dette
-
-cor(ny_tibble$Score, ny_tibble$vektor)
-
-
-u = long[long$Awarding == c("Finland","Ukraine"),]
-View(u)
-
+View(esc_total)
