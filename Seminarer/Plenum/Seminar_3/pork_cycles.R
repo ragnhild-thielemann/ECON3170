@@ -36,6 +36,7 @@ for (t in tid){
   x1 = tilbud(pris) #finner hvor mye bonden da produserer neste år
 }
 
+
 print(length(kvantum_griser))
 print(length(tid))
 ggplot() + geom_point(aes(x = tid, y = kvantum_griser)) + labs(x = "Tid", y = "Antall griser", title = "Griseparadokset")
