@@ -16,4 +16,4 @@ hva_er_vanskelig <- performance_by_nationality|>
   labs(x = "Del av  testen", y = "Score")
 hva_er_vanskelig
 
-ggsave("hva_er_vanskelig.png", plot = hva_er_vanskelig)
+ggsave("hva_er_vanskelig_1.png", plot = hva_er_vanskelig)
