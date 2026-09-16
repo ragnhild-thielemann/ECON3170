@@ -17,8 +17,8 @@ nasjonalt <- mobility |>
   filter(nasjonal == 0) |>
   rename(hjemme = residential_percent_change_from_baseline) |>
   select(date, hjemme) |>
-  left_join(oslo)
+  left_join(oslo)|>
+  mutate(andel = hjemme_oslo/hjemme)
+
  
-
-
-View(nasjonalt)
+ggplot(nasjonalt, aes(x = date, y = andel))   + geom_line()
