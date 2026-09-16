@@ -9,9 +9,11 @@ hva_er_vanskelig <- performance_by_nationality|>
                          destination = "continent"))|>
   
   ggplot(aes(x = part, y = score,color = kontinent)) +
-  geom_boxplot(aes(group = part)) + 
   geom_point() + 
-  labs(x = "Del av  testen", y = "Score")
   
+  geom_boxplot(aes(group = part)) + 
+
+  labs(x = "Del av  testen", y = "Score")
+hva_er_vanskelig
 
 ggsave("hva_er_vanskelig.png", plot = hva_er_vanskelig)
