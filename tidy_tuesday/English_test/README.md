@@ -8,6 +8,8 @@ Amerika og Europa har gjennomgående observasjoner over 75%-kvantilen for alle t
 
 ## BNP i landet
 
-Jeg har en hypotese om at dersom landet har lavere BNP per innbygger, så vil elevene score dårligere på engelsktestene. Jeg antar også at forskjellen er mer signifikant når de blir testet på lesing og skriving, enn når de blir testet på snakking og høring, da lesing og skriving er ferdigheter man i stor grad trenger skolegang for å kunne mestre. 
+Jeg har en hypotese om at elevenes prestasjoner henger sammen med landets BNP, og at elever i land med lavere BNP i gjennomsnitt vil ha lavere testresultater. I tillegg undersøker jeg om graden av demokrati kan være forbundet med denne sammenhengen.
 
-I tibbelen *bnp_i_landet* lager jeg to grupper for testen - en for lesing og skriving, og en for snakking og høring. 
+For å undersøke dette lager jeg et plott der jeg ser på sammenhengen mellom BNP og testscore. Hvert land får fire observasjoner, én for hver av testene i lesing, skriving, lytting og snakking. Jeg bruker ulike linjer for de forskjellige nivåene av demokratiscore, slik at jeg kan undersøke om sammenhengen mellom BNP og testresultater varierer med graden av demokrati.
+
+![Bilde]
