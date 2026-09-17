@@ -50,33 +50,43 @@ sprintf("Likhooden til momentestimatorene er %g", likhood_moment)
 
 
 negloglikgamma <- function(logalpha,x = forskiring){#har forsirkingsdataen som datapunktene vi intragerer ovder
-  n = length(x) #finner antall observasjoner
-  alpha = exp(logalpha) #kommer tilbake til den opprinnlige verdien av alpha
+  n <- length(x) #finner antall observasjoner
+  alpha <- exp(logalpha) #kommer tilbake til den opprinnlige verdien av alpha
   
-  gamma = alpha/mean(x) #gamma er en funskjon av alpha, som vist tidligere
-  logL = n*alpha*log(gamma) - n*lgamma(alpha) + (alpha-1)*sum(log(x)) - gamma*sum(x) #regner ut likhooden
+  gamma <- alpha/mean(x) #gamma er en funskjon av alpha, som vist tidligere
+  logL <- n*alpha*log(gamma) - n*lgamma(alpha) + (alpha-1)*sum(log(x)) - gamma*sum(x) #regner ut likhooden
   -logL 
   #'Da optim-funksjonen regner minumumsverdien, tar vi negativt fortegn foran likhooden. 
 }
 
-fit.ml = optim(log(a_moment), negloglikgamma, x = forskiring, method = "BFGS")
+fit.ml <- optim(log(a_moment), negloglikgamma, x = forskiring, method = "BFGS")
 #'BFGS er en modifisert versjon av Newtons metode, som bruker funksjonsverdier og gradienter til å minimere funksjonen
 #'Vi bruker momentestimatoren for alpha, som vi regnet ut tidligere i oppgaven, som initialverdi
 
-alpha_ml = exp(fit.ml$par) 
+alpha_ml <- exp(fit.ml$par) 
 #'Under optimeringen av ML-estimatoren bruker vi logatitemen til aplha, så vi må ta eksponenten av den optimerte verdien,
 #'for å finne tilbake til sann verdi.  
 #'Grunnen til at vi tar logaritmen, er for å hindre funksjonen i å optimere over negative verdier for alpha og beta, 
 #'da dette er parametere som er strengt større enn null.
 #'Ved å ta logatitmen av startbetingelsene, sikrer vi at den bare optimerer over positive verdier. 
 
-gamma_ml = alpha_ml/mean(forskiring)
+gamma_ml <- alpha_ml/mean(forskiring)
 #' Bruker ML-estimatoren ved utregningen av verdien for gamma. 
 
 
-likhood_ml= L(forskiring,alpha_ml,gamma_ml) #finner likhoodsverdien for parameterparret (alpha_ml, gamma_ml)
+likhood_ml <-L(forskiring,alpha_ml,gamma_ml) #finner likhoodsverdien for parameterparret (alpha_ml, gamma_ml)
 
 sprintf("ML-estimatorene er a_ml = %g og b_ml %g", alpha_ml, gamma_ml)
 
+differanse <- likhood_ml-likhood_moment
 
 
+sprintf("Loglikhooden for ML-estimaotorene er %g , mens den er %g for momentestimatene. Det gir en differeanse pa %g , der loglighooden for ml-estimatene er strt", likhood_ml,likhood_moment,differanse)
+
+#'Dette gir følgene output når vi kjører koden
+#'ML-estimatorene er a_ml = 1.38835 og b_ml 0.0575159
+#'
+#'Loglikhooden for ML-estimaotorene er -26488.3 , mens den er -27264.5 
+#'for momentestimatene. Det gir en differeanse pa 776.233 , 
+#'der loglighooden for ml-estimatene er størst"
+#'
