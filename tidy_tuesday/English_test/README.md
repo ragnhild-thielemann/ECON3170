@@ -12,4 +12,5 @@ Jeg har en hypotese om at elevenes prestasjoner henger sammen med landets BNP, o
 
 For å undersøke dette lager jeg et plott der jeg ser på sammenhengen mellom BNP og testscore. Hvert land får fire observasjoner, én for hver av testene i lesing, skriving, lytting og snakking. Jeg bruker ulike linjer for de forskjellige nivåene av demokratiscore, slik at jeg kan undersøke om sammenhengen mellom BNP og testresultater varierer med graden av demokrati.
 
-![Bilde]
+![Bilde](https://github.com/ragnhild-thielemann/ECON3170/blob/main/diktaturer_med_laegs.png)
+
