@@ -76,17 +76,42 @@ gamma_ml <- alpha_ml/mean(forskiring)
 
 likhood_ml <-L(forskiring,alpha_ml,gamma_ml) #finner likhoodsverdien for parameterparret (alpha_ml, gamma_ml)
 
-sprintf("ML-estimatorene er a_ml = %g og b_ml %g", alpha_ml, gamma_ml)
 
 differanse <- likhood_ml-likhood_moment
-
-
+sprintf("ML-estimatorene er a_ml = %g og b_ml %g", alpha_ml, gamma_ml)
 sprintf("Loglikhooden for ML-estimaotorene er %g , mens den er %g for momentestimatene. Det gir en differeanse pa %g , der loglighooden for ml-estimatene er strt", likhood_ml,likhood_moment,differanse)
 
 #'Dette gir følgene output når vi kjører koden
 #'ML-estimatorene er a_ml = 1.38835 og b_ml 0.0575159
-#'
+
 #'Loglikhooden for ML-estimaotorene er -26488.3 , mens den er -27264.5 
 #'for momentestimatene. Det gir en differeanse pa 776.233 , 
 #'der loglighooden for ml-estimatene er størst"
-#'
+
+#--------------------------------------------------------------------------------------------
+#Oppgave e)
+#-------------------------------------------------------------------------------------------
+
+
+set.seed(67) #in heaven, six-seven
+
+terms <- 67
+alpha_vektor <- vector("double",terms) #opretter tomme vektorer, for å ta imot verdiene
+
+gamma_vektor <- vector("double",terms)
+
+
+for (t in 1:terms){
+  bootstrapverdier <- sample(forsikring, n , replace = TRUE) #trekker ut delverdier fra datasettet vårt
+  optimering <-  optim(log(6.7), negloglikgamma, x = bootstrapverdier, method = "BFGS") #finner ml-estimatene for bootstrapsamplene
+  alpha <- exp(optimering$par) #finner estimert verdi for alpha
+  gamma <- alpha/mean(forskiring) #finner estimert verdi for gamma
+  alpha_vektor[t] <- alpha #legger til i vektoren
+  gamma_vektor[t] <- gamma
+}
+
+gamma_intervall <- quantile(gamma_vektor,c(0.025,0.975))
+alpha_intervall <- quantile(alpha_vektor,c(0.025,0.975))
+
+print(gamma_intervall)
+print(alpha_intervall)
