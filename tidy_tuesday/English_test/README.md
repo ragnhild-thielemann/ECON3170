@@ -6,4 +6,8 @@ Det første vi ønsker å undersøke, er hvilken del av testen som er mest utfor
 
 Amerika og Europa har gjennomgående observasjoner over 75%-kvantilen for alle testformene. Asia og Afrika har derimot større spredning, med datapunkter både over 75%-kvantilen og under 25%-kvantilen. 
 
-Min første tanke er at dette skyldes BNP i landet. 
+## BNP i landet
+
+Jeg har en hypotese om at dersom landet har lavere BNP per innbygger, så vil elevene score dårligere på engelsktestene. Jeg antar også at forskjellen er mer signifikant når de blir testet på lesing og skriving, enn når de blir testet på snakking og høring, da lesing og skriving er ferdigheter man i stor grad trenger skolegang for å kunne mestre. 
+
+I tibbelen *bnp_i_landet* lager jeg to grupper for testen - en for lesing og skriving, og en for snakking og høring. 
