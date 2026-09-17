@@ -4,4 +4,6 @@ Det første vi ønsker å undersøke, er hvilken del av testen som er mest utfor
 
 ![Bilde](https://github.com/ragnhild-thielemann/ECON3170/blob/main/hva_er_vanskelig_1.png)
 
-Amerika og Europa har gjennomgående observasjoner over 75%-kvantilen for alle testformene. Asia og Afrika har derimot større spredning, med datapunkter både over 75%-kvantilen og under 25%-kvantilen. Dette tyder på større variasjon i resultatene for disse kontinentene, og gjør det interessant å undersøke Asia og Afrika nærmere.
+Amerika og Europa har gjennomgående observasjoner over 75%-kvantilen for alle testformene. Asia og Afrika har derimot større spredning, med datapunkter både over 75%-kvantilen og under 25%-kvantilen. 
+
+Min første tanke er at dette skyldes BNP i landet. 
