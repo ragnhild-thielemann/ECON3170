@@ -89,7 +89,7 @@ sprintf("Loglikhooden for ML-estimaotorene er %g , mens den er %g for momentesti
 #'der loglighooden for ml-estimatene er størst"
 
 #--------------------------------------------------------------------------------------------
-#Oppgave e)
+#Oppgave e og f)
 #-------------------------------------------------------------------------------------------
 
 
@@ -100,14 +100,18 @@ alpha_vektor <- vector("double",terms) #opretter tomme vektorer, for å ta imot 
 
 gamma_vektor <- vector("double",terms)
 
+mu_vektor <- vector("double",terms)
 
 for (t in 1:terms){
   bootstrapverdier <- sample(forsikring, n , replace = TRUE) #trekker ut delverdier fra datasettet vårt
   optimering <-  optim(log(6.7), negloglikgamma, x = bootstrapverdier, method = "BFGS") #finner ml-estimatene for bootstrapsamplene
   alpha <- exp(optimering$par) #finner estimert verdi for alpha
-  gamma <- alpha/mean(forskiring) #finner estimert verdi for gamma
+  gamma <- alpha/mean(bootstrapverdier) #finner estimert verdi for gamma
+  mu <- alpha/gamma
   alpha_vektor[t] <- alpha #legger til i vektoren
   gamma_vektor[t] <- gamma
+  mu_vektor[t] <- mu
+  
 }
 
 gamma_intervall <- quantile(gamma_vektor,c(0.025,0.975))
@@ -115,3 +119,25 @@ alpha_intervall <- quantile(alpha_vektor,c(0.025,0.975))
 
 print(gamma_intervall)
 print(alpha_intervall)
+#' Dette gir oss følgende intervaller
+#' gamma = [0.055146, 0.059496]
+#' alpha = [1.3311, 1.4361]
+#' 
+
+a = 0.05
+mu_intervall_95 <- quantile(mu_vektor,c(a/2,1-a/2))
+a = 0.01
+mu_intervall_99 <- quantile(mu_vektor,c(a/2,1-a/2))
+print(mu_intervall_95)
+print(mu_intervall_99)
+
+#' For hypotesetesting med tosidig alternativ, vil nullhypotesen forkastes dersom 
+#' den ligger utenfor kofidensintervalled med signfikansnivå a. 
+#' For mu får vi [23.48,24.78] som 95% koefedensintervall, basert på den ikke-parametiske bootstrappingen. 
+#' Her ser vi at nullhypotesen H_0 : mu = 25 ligger utenfor koefedensintervallet, så vi forkaster nullhypotesen 
+#' til fordel for alternaivhyptotesen mu != 25.
+#' 
+#' For signifikansnivået på a = 0.01, får vi følgene 99% koefidensintervall for mu: [23.38,25.1].
+#' Her ser vi at nullhypotesen er innenfor kofidensintervallet, så vi beholder nullhypotesen. 
+#' 
+#' Basert på disse testene, konkluderer vi med at p-verdien ligger mellom 0.05 og 0.01.
