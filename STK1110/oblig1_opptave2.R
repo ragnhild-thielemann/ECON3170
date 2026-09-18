@@ -26,7 +26,7 @@ print(intervall)
 #--------------------------------------------------------------------------------------------
 
 
-terms <- 67000
+terms <- 6700
 n <- 15
 mu <- 558
 sigma <- 30
@@ -67,7 +67,7 @@ for (t in 1:terms){
   a <- 0.05 #signifikansnivå
   
   error_n <-  qnorm(1-a/2)*sigma/sqrt(n) #feilen for normalfordelingen
-  error_s <- qt(1-a/2,n-1)*S/sqrt(n) #feilen for t-fordelingen
+  error_s <-  qnorm(1-a/2)*S/sqrt(n) #feilen for t-fordelingen
   
   #beregner intervallene
   u_n <- mu_boot + error_n ;l_n <- mu_boot - error_n
