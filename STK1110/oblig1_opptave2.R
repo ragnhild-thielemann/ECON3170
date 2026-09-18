@@ -129,3 +129,35 @@ for (t in 1:terms){
 print(antall_i_intervall/terms)
 
 
+#--------------------------------------------------------------------------------------------
+#Oppgave e)
+#--------------------------------------------------------------------------------------------
+
+terms <- 670
+mu <- 558 
+sigma <- 30
+n <- 15
+antall_ganger <- 0
+for_hoyt <- 0
+for (t in 1:terms){
+  bootstrap <- rt(n,7) #trekker fra fordelingen med 7 frihetsgrader
+  x <- mu + sigma*bootstrap
+  mu_boot <- mean(x)
+  a <- 0.05
+  u <- mu_boot + qnorm(1-a/2)*sigma/sqrt(n) 
+  l <- mu_boot - qnorm(1-a/2)*sigma/sqrt(n)
+  if (between(mu,l,u)){
+    antall_ganger <- antall_ganger + 1
+  }
+ 
+  
+}
+andel <- (antall_ganger/terms)
+print(andel)
+andel_for_hoyt <- for_hoyt/terms
+print(andel_for_hoyt)
+
+
+print(mean(rt(n,7)-rnorm(n)))
+
+
