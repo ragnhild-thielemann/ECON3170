@@ -68,7 +68,7 @@ alpha_ml <- exp(fit.ml$par)
 #'for å finne tilbake til sann verdi.  
 #'Grunnen til at vi tar logaritmen, er for å hindre funksjonen i å optimere over negative verdier for alpha og beta, 
 #'da dette er parametere som er strengt større enn null.
-#'Ved å ta logatitmen av startbetingelsene, sikrer vi at den bare optimerer over positive verdier. 
+#'Ved å ta logatitmen av startbetingelsene, sikrer vi at optimeringsfunksjonen bare optimerer over positive verdier av alpha og beta 
 
 gamma_ml <- alpha_ml/mean(forskiring)
 #' Bruker ML-estimatoren ved utregningen av verdien for gamma. 
@@ -95,7 +95,7 @@ sprintf("Loglikhooden for ML-estimaotorene er %g , mens den er %g for momentesti
 
 set.seed(67) #in heaven, six-seven
 
-terms <- 67
+terms <- 670
 alpha_vektor <- vector("double",terms) #opretter tomme vektorer, for å ta imot verdiene
 
 gamma_vektor <- vector("double",terms)
