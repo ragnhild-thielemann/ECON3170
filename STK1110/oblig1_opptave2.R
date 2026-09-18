@@ -1,9 +1,13 @@
 
 library(docstring)
 
+set.seed(670) #setter seed for alle oppgavene
+
 #--------------------------------------------------------------------------------------------
 #Oppgave a)
 #--------------------------------------------------------------------------------------------
+
+
 # lager en vektor med de målte verdiene for blåbærene
 blueberry <- c(525, 587, 547, 558, 591, 531, 571, 551, 566, 622, 561, 502, 556, 565, 562)
  
@@ -97,3 +101,13 @@ andel_t <- (antall_ganger_s/terms)  #andelen av intervallene for t-fordelingen s
 print(andel_t)
 andel_n <- (antall_ganger_n/terms)  #andelen av intervallene for normal-fordelingen som inneholder sann verdi av mu
 print(andel_n)
+
+
+#--------------------------------------------------------------------------------------------
+#Oppgave d)
+#--------------------------------------------------------------------------------------------
+
+terms = 6700
+
+
+
