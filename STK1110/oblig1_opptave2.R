@@ -133,7 +133,7 @@ print(antall_i_intervall/terms)
 #Oppgave e)
 #--------------------------------------------------------------------------------------------
 
-terms <- 670
+terms <- 6700
 mu <- 558 
 sigma <- 30
 n <- 15
@@ -157,7 +157,13 @@ print(andel)
 andel_for_hoyt <- for_hoyt/terms
 print(andel_for_hoyt)
 
+total_mean <- 0
+for (t in 1:terms){
+  normal <- rnorm(n)
+  tfordeling <- rt(n,7)
+  total_mean <- (total_mean + sum(normal-tfordeling))
+}
 
-print(mean(rt(n,7)-rnorm(n)))
+total_mean
 
 
