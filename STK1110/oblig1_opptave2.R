@@ -167,3 +167,31 @@ for (t in 1:terms){
 total_mean
 
 
+
+
+#--------------------------------------------------------------------------------------------
+#Oppgave f)
+#--------------------------------------------------------------------------------------------
+
+terms <- 6700
+mu <- 558 
+sigma <- 30
+n <- 15
+antall_ganger <- 0
+sigma_hat <- sqrt(1.4)*sigma
+for (t in 1:terms){
+  bootstrap <- rt(n,7) #trekker fra fordelingen med 7 frihetsgrader
+  x <- mu + sigma*bootstrap
+ 
+  S_2 <- var(x) #finner empirisk standardavvik
+  a = 0.05
+  l = ((n-1)*S_2)/(1.4*qchisq(1-a/2,n-1)) ; u = ((n-1)*S_2*1.4)/(qchisq(a/2,n-1)) #beregner intervallet
+  if (between(sigma_hat,sqrt(l),sqrt(u))){
+    #' Teller opp antall ganger sann verdi ligger i intervallet
+    antall_i_intervall <- antall_i_intervall + 1 
+  }
+  
+  
+}
+
+print(antall_ganger/terms)
